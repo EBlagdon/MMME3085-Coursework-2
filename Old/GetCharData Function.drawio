@@ -1,0 +1,90 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="28.2.9">
+  <diagram name="Page-1" id="1Ze4hACQmaQ0QLitIRXr">
+    <mxGraphModel dx="1220" dy="593" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="76hVb3086pQwOeTyh-GV-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="76hVb3086pQwOeTyh-GV-3" target="76hVb3086pQwOeTyh-GV-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AlxsbrXNrsygSVHx78-n-1" value="not finished" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="76hVb3086pQwOeTyh-GV-8" vertex="1" connectable="0">
+          <mxGeometry x="-0.245" y="-3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-3" value="for number of lines of font data" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="70" y="240" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="76hVb3086pQwOeTyh-GV-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-14" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="76hVb3086pQwOeTyh-GV-10" vertex="1" connectable="0">
+          <mxGeometry x="-0.4356" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="76hVb3086pQwOeTyh-GV-7" target="76hVb3086pQwOeTyh-GV-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-13" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="76hVb3086pQwOeTyh-GV-12" vertex="1" connectable="0">
+          <mxGeometry x="-0.5667" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-7" value="Does line state 999" style="rhombus;whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="70" y="400" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="76hVb3086pQwOeTyh-GV-11" target="76hVb3086pQwOeTyh-GV-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-11" value="Store position of new data point in array CharLocation(position x)" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="210" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-15" value="X=X+1" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="410" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-18" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="76hVb3086pQwOeTyh-GV-3" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="600" as="sourcePoint" />
+            <mxPoint x="360" y="410" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="20" y="600" />
+              <mxPoint x="20" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="76hVb3086pQwOeTyh-GV-19" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="76hVb3086pQwOeTyh-GV-15" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="310" y="460" as="sourcePoint" />
+            <mxPoint x="50" y="600" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="470" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AlxsbrXNrsygSVHx78-n-2" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="76hVb3086pQwOeTyh-GV-3" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="420" y="450" as="sourcePoint" />
+            <mxPoint x="290" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AlxsbrXNrsygSVHx78-n-3" value="Finished" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="AlxsbrXNrsygSVHx78-n-2" vertex="1" connectable="0">
+          <mxGeometry x="0.2057" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AlxsbrXNrsygSVHx78-n-4" value="Return&amp;nbsp;&lt;div&gt;CharLocation()&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="294" y="250" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AlxsbrXNrsygSVHx78-n-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="AlxsbrXNrsygSVHx78-n-5" target="76hVb3086pQwOeTyh-GV-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AlxsbrXNrsygSVHx78-n-5" value="Function: GetCharLocation (Find location of characters from SingleStrokeFont.txt)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="50" y="130" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
