@@ -4,6 +4,10 @@
 //#include <windows.h>
 #include "rs232.h"
 #include "serial.h"
+#include "FormatFont.h"
+#include "FormatWord.h"
+#include "GCodeToRobot.h"
+
 
 #define bdrate 115200               /* 115200 baud */
 
@@ -45,20 +49,69 @@ int main()
     SendCommands(buffer);
 
     // OPEN SINGLE STROKE FONT .TXT
+    FILE *SingleStrokeFont = fopen("SingleStrokeFont.txt", "r");
     //CHECK HAS OPENED
+    if (!SingleStrokeFont) {
+        printf("Failed to open SingleStrokeFont.txt");
+        return 1;
+    }
     //GET USER INPUT FONT SIZE
+    int FontSize;
+    printf("Enter font size (4-10): ");
+    scanf("%d", &FontSize);
     //CHECK FONT SIZE IS BETWEEN 4 AND 10
+    if (FontSize < 4 || FontSize > 10) {
+        printf("Font size must be between 4 and 10.\n");
+        return 1;
+    }
+   
     //CALL FORMAT AND SCALE FONT DATA FUNCTION
-    //OPEN TEST.TXT
-    //CHECK HAS OPENED
-    //CALL SEPERATE WORDS FUNCTION
 
+    typedef struct {
+    float gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
+    int location;           // Position of the character in the GCode array
+} 
+    CharacterFontData;
+    CharacterFontData Letters[256];  //do i need to declare this again?
+ 
+    FormatAndScaleFontData(&SingleStrokeFont, &FontSize, &Letters);
+    //OPEN Test.TXT
+    FILE *WordFile = fopen("Test.txt", "r");
+    //CHECK HAS OPENED
+    if (!WordFile) {
+        printf("Failed to open Test.txt");
+        return 1;
+    }
+
+    //CALL SEPERATE WORDS FUNCTION
+    int character;
+    int numwords = 0;
+    char *WordContents[100]; //array to hold words
+    int startposition = 0;
+    SeperateWords(WordFile, WordContents, startposition);
+
+    //find number of words 
+    while ((character = fgetc(WordFile)) != EOF) {
+        if (character == ' ' || character == '\n') {
+            numwords++;
+        }
+    }
+    
     //FOR AMOUNT OF WORDS
-        //FORMAT WORD FUNCTION
+    for (int i = 0; i < numwords; i++) {
+        SeperateWords(WordFile, WordContents, &startposition); //FORMAT WORD FUNCTION
         //FOR AMOUNT OF CHARACTERS IN WORD
-            //FIND CHARACTER IN WORD ARRAY
-            //FIND GCODE FOR THAT CHARACTER
-            //GCODETOROBOT FUNCTION
+        for (int j = 0; WordContents[j] != '\0'; j++) { //for the number of characters in the word
+            char currentChar = WordContents[j]; //GET CURRENT CHARACTER
+            int asciiValue = (int)currentChar; //GET ASCII VALUE OF CHARACTER
+            GCodeToRobot(&Letters, asciiValue); //GCODETOROBOT FUNCTION
+        }
+        for (int k = 0; k < MAXCN; k++) {   //resets wordcontents for next word
+            WordContents[k] = 0;
+        }
+    }
+            //reset wordcontents to 0 for next word 
+
 
     //Set final conditions for robot
     
@@ -98,8 +151,7 @@ int main()
 
 // Send the data to the robot - note in 'PC' mode you need to hit space twice
 // as the dummy 'WaitForReply' has a getch() within the function.
-void SendCommands (char *buffer )
-{
+void SendCommands (char *buffer ){
     // printf ("Buffer to send: %s", buffer); // For diagnostic purposes only, normally comment out
     PrintBuffer (&buffer[0]);
     WaitForReply();

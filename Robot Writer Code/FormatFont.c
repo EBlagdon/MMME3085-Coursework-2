@@ -17,7 +17,7 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, int FontSize, CharacterFontDa
     while (fgets(line, sizeof(line), SingleStrokeFont)) {    //reads each line of the font file 
         if (sscanf(line, "999 %d %d", &CharID, &CharLinesofGCode) == 2) { //checks if the line is 999 which means new character
             Letters[CharID].location = 0;
-            for (int j = 0; j < CharLinesofGCode; j++) {
+            for (int j = 0; j < CharLinesofGCode; j++) { //loops for amount of gcode lines for that character
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
                     float x, y;
                     int pen;
@@ -67,10 +67,9 @@ int FormatAndScaleFontData( const int NumFont, FILE *SingleStrokeFont, int FontS
     int i;
     int j=0;
     char currChar;
-   char bufX[64], bufy[64], bufp[8];
-   int bx =0, by=0, bp=0;
-   int lineindex = 0;
-   int currentletter = 0;
+    int PositionDataX[MAXCN];
+    int PositionDataY[MAXCN];   
+    int PositionDataP;
     
     for (i=1; i<=NumFont; i++) {
         while (j + 1 < MAXCN && ((currChar = fgetc (SingleStrokeFont)) != ' ' && currChar != EOF)){  //Reads untill the first space and saves it to PositionDataX
