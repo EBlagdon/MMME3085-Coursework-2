@@ -66,15 +66,9 @@ int main()
     }
    
     //CALL FORMAT AND SCALE FONT DATA FUNCTION
-
-    typedef struct {
-    float gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
-    int location;           // Position of the character in the GCode array
-} 
-    CharacterFontData;
     CharacterFontData Letters[256];  //do i need to declare this again?
  
-    FormatAndScaleFontData(&SingleStrokeFont, &FontSize, &Letters);
+    FormatAndScaleFontData(SingleStrokeFont, FontSize, Letters);
     //OPEN Test.TXT
     FILE *WordFile = fopen("Test.txt", "r");
     //CHECK HAS OPENED
@@ -98,19 +92,24 @@ int main()
     }
     
     //FOR AMOUNT OF WORDS
+    float Xpos = 0.0f; //Initial X position
+    float Ypos = 0.0f; //Initial Y position
+    char CurrentChar;
+    float Spacing[2]; //array to hold spacing values in x and y direction
     for (int i = 0; i < numwords; i++) {
-        SeperateWords(WordFile, WordContents, &startposition); //FORMAT WORD FUNCTION
+        SeperateWords(WordFile, WordContents, startposition); //FORMAT WORD FUNCTION
+        FindWordSpacing(*WordContents, Spacing, FontSize); //WORD SPACING FUNCTION
         //FOR AMOUNT OF CHARACTERS IN WORD
         for (int j = 0; WordContents[j] != '\0'; j++) { //for the number of characters in the word
-            char currentChar = WordContents[j]; //GET CURRENT CHARACTER
+            char currentChar = *WordContents[j]; //GET CURRENT CHARACTER
             int asciiValue = (int)currentChar; //GET ASCII VALUE OF CHARACTER
-            GCodeToRobot(&Letters, asciiValue); //GCODETOROBOT FUNCTION
+            GCodeToRobot(Letters, asciiValue, Spacing, buffer); //GCODETOROBOT FUNCTION
         }
         for (int k = 0; k < MAXCN; k++) {   //resets wordcontents for next word
-            WordContents[k] = 0;
+            WordContents[k] = 0; 
         }
     }
-            //reset wordcontents to 0 for next word 
+            
 
 
     //Set final conditions for robot

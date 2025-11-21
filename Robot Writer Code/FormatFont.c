@@ -7,8 +7,6 @@ typedef struct {
     int location;           // Position of the character in the GCode array
 } CharacterFontData;
 
-CharacterFontData Letters[256]; 
-
 int FormatAndScaleFontData(FILE *SingleStrokeFont, int FontSize, CharacterFontData Letters[]) {
     int CharID;
     int CharLinesofGCode;
