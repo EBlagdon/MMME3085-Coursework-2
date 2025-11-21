@@ -10,6 +10,10 @@
 
 
 #define bdrate 115200               /* 115200 baud */
+#define X 0
+#define Y 1
+
+#define debug 1 //1 for debug mode, 0 for normal operation
 
 void SendCommands (char *buffer );
 
@@ -18,6 +22,7 @@ int main()
 
     //char mode[]= {'8','N','1',0};
     char buffer[100];
+
 
     // If we cannot open the port then give up immediately
     if ( CanRS232PortBeOpened() == -1 )
@@ -29,12 +34,14 @@ int main()
     // Time to wake up the robot
     printf ("\nAbout to wake up the robot\n");
 
+
     // We do this by sending a new-line
     sprintf (buffer, "\n");
      // printf ("Buffer to send: %s", buffer); // For diagnostic purposes only, normally comment out
     PrintBuffer (&buffer[0]);
     Sleep(100);
 
+    
     // This is a special case - we wait  until we see a dollar ($)
     WaitForDollar();
 
@@ -56,19 +63,27 @@ int main()
         return 1;
     }
     //GET USER INPUT FONT SIZE
+    int l=0;
     int FontSize;
-    printf("Enter font size (4-10): ");
-    scanf("%d", &FontSize);
+    
     //CHECK FONT SIZE IS BETWEEN 4 AND 10
-    if (FontSize < 4 || FontSize > 10) {
-        printf("Font size must be between 4 and 10.\n");
-        return 1;
+    while (l==0) {
+        printf("Enter font size (4-10): ");
+        scanf("%d", &FontSize);
+        if (FontSize > 3 && FontSize < 11) {
+            l=1;
+        }
+        else {
+            printf("Font size must be between 4 and 10.\n");
+            l=0;
+        }
+
     }
    
     //CALL FORMAT AND SCALE FONT DATA FUNCTION
-    CharacterFontData Letters[256];  //do i need to declare this again?
+    CharacterFontData Letters[256] = {0}; //array to hold font data for 256 ASCII characters
  
-    FormatAndScaleFontData(SingleStrokeFont, FontSize, Letters);
+    FormatAndScaleFontData(SingleStrokeFont, FontSize, &Letters);
     //OPEN Test.TXT
     FILE *WordFile = fopen("Test.txt", "r");
     //CHECK HAS OPENED
@@ -80,9 +95,8 @@ int main()
     //CALL SEPERATE WORDS FUNCTION
     int character;
     int numwords = 0;
-    char *WordContents[100]; //array to hold words
+    char WordContents[15]; //array to hold words
     int startposition = 0;
-    SeperateWords(WordFile, WordContents, startposition);
 
     //find number of words 
     while ((character = fgetc(WordFile)) != EOF) {
@@ -92,20 +106,21 @@ int main()
     }
     
     //FOR AMOUNT OF WORDS
-    float Xpos = 0.0f; //Initial X position
-    float Ypos = 0.0f; //Initial Y position
     char CurrentChar;
     float Spacing[2]; //array to hold spacing values in x and y direction
+    Spacing[X] = Letters[13].gcode[0][X]; //initial x position
+    Spacing[Y] = Letters[13].gcode[0][Y]; //initial y position
     for (int i = 0; i < numwords; i++) {
-        SeperateWords(WordFile, WordContents, startposition); //FORMAT WORD FUNCTION
-        FindWordSpacing(*WordContents, Spacing, FontSize); //WORD SPACING FUNCTION
+        SeperateWords(WordFile, &WordContents, &startposition); //FORMAT WORD FUNCTION
+        FindWordSpacing(&Letters, WordContents, &Spacing, FontSize); //WORD SPACING FUNCTION
         //FOR AMOUNT OF CHARACTERS IN WORD
         for (int j = 0; WordContents[j] != '\0'; j++) { //for the number of characters in the word
-            char currentChar = *WordContents[j]; //GET CURRENT CHARACTER
-            int asciiValue = (int)currentChar; //GET ASCII VALUE OF CHARACTER
-            GCodeToRobot(Letters, asciiValue, Spacing, buffer); //GCODETOROBOT FUNCTION
+            char currentChar = WordContents[j]; //GET CURRENT CHARACTER
+            int asciiValue = (int)currentChar; //GET ASCII VALUE OF CHARACTER    
+            GCodeToRobot(&Letters, asciiValue, Spacing, buffer); //GCODETOROBOT FUNCTION
+            Spacing[X] = Spacing[X] + 18*(FontSize/18.0f); //update spacing x position for next letter
         }
-        for (int k = 0; k < MAXCN; k++) {   //resets wordcontents for next word
+        for (int k = 0; k < 15; k++) {   //resets wordcontents for next word
             WordContents[k] = 0; 
         }
     }
@@ -150,6 +165,7 @@ int main()
 
 // Send the data to the robot - note in 'PC' mode you need to hit space twice
 // as the dummy 'WaitForReply' has a getch() within the function.
+/*
 void SendCommands (char *buffer ){
     // printf ("Buffer to send: %s", buffer); // For diagnostic purposes only, normally comment out
     PrintBuffer (&buffer[0]);
@@ -157,3 +173,4 @@ void SendCommands (char *buffer ){
     Sleep(100); // Can omit this when using the writing robot but has minimal effect
     // getch(); // Omit this once basic testing with emulator has taken place
 }
+*/
