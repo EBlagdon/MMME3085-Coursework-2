@@ -53,20 +53,37 @@ for (int i=0; i < (*Letters)[asciiValue].location; i++) { //for each line of gco
     //SendtoRobot(x, y, pen);
     sprintf(buffer, "G1 X%.2f Y%.2f\n", x, y); //format gcode command
     SendCommands(buffer);
-    if (i >0) { // for all but first line
-    if (pen != (*Letters)[asciiValue].gcode[i-1][P]){ //only send pen command if pen position changes
+    if (i == 0) { // for first line
         sprintf(buffer, "S%d\n", pen); //format pen command
         SendCommands(buffer);
+    }
+    if (i >0) { // for all but first line
+        if (pen != (*Letters)[asciiValue].gcode[i-1][P]){ //only send pen command if pen position changes
+            sprintf(buffer, "S%d\n", pen); //format pen command
+            SendCommands(buffer);
     }
     }
 }
 }
 
-/*
-    EXAMPLE OF CODE TO SEND TO ROBOT
+    // These are sample commands to draw out some information - these are the ones you will be generating.
+    /*
     sprintf (buffer, "G0 X-13.41849 Y0.000\n");
     SendCommands(buffer);
     sprintf (buffer, "S1000\n");
     SendCommands(buffer);
-
+    sprintf (buffer, "G1 X-13.41849 Y-4.28041\n");
+    SendCommands(buffer);
+    sprintf (buffer, "G1 X-13.41849 Y0.0000\n");
+    SendCommands(buffer);
+    sprintf (buffer, "G1 X-13.41089 Y4.28041\n");
+    SendCommands(buffer);
+    sprintf (buffer, "S0\n");
+    SendCommands(buffer);
+    sprintf (buffer, "G0 X-7.17524 Y0\n");
+    SendCommands(buffer);
+    sprintf (buffer, "S1000\n");
+    SendCommands(buffer);
+    sprintf (buffer, "G0 X0 Y0\n");
+    SendCommands(buffer);
     */

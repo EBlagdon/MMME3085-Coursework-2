@@ -1,5 +1,5 @@
-#ifndef GCODETOROBOT_H
-#define GCODETOROBOT_H
+#ifndef CharacterToGcode_H
+#define CharacterToGcode_H
 
 #include "FormatFont.h" 
 #include "FormatWord.h"  
@@ -10,5 +10,4 @@ int FindWordSpacing(CharacterFontData (*Letters)[], char WordContents[], float (
 
 void SendCommands (char *buffer );
 
-//int SendtoRobot(float x, float y, int pen);
-#endif // GCODETOROBOT_H
+#endif // CharacterToGcode_H

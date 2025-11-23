@@ -6,7 +6,7 @@
 #include "serial.h"
 #include "FormatFont.h"
 #include "FormatWord.h"
-#include "GCodeToRobot.h"
+#include "CharacterToGcode.h"
 
 
 #define bdrate 115200               /* 115200 baud */
@@ -57,25 +57,22 @@ int main()
 
     // OPEN SINGLE STROKE FONT .TXT
     FILE *SingleStrokeFont = fopen("SingleStrokeFont.txt", "r");
-    //CHECK HAS OPENED
-    if (!SingleStrokeFont) {
+    if (!SingleStrokeFont) { //CHECK HAS OPENED
         printf("Failed to open SingleStrokeFont.txt");
         return 1;
     }
+
     //GET USER INPUT FONT SIZE
-    int l=0;
+    int l=0; // variable to check valid font size
     int FontSize;
-    
-    //CHECK FONT SIZE IS BETWEEN 4 AND 10
     while (l==0) {
         printf("Enter font size (4-10): ");
         scanf("%d", &FontSize);
-        if (FontSize > 3 && FontSize < 11) {
-            l=1;
+        if (FontSize > 3 && FontSize < 11) { //CHECK FONT SIZE IS BETWEEN 4 AND 10
+            l=1; // if valid font size, exit the loop
         }
         else {
             printf("Font size must be between 4 and 10.\n");
-            l=0;
         }
 
     }
@@ -83,44 +80,43 @@ int main()
     //CALL FORMAT AND SCALE FONT DATA FUNCTION
     CharacterFontData Letters[256] = {0}; //array to hold font data for 256 ASCII characters
  
-    FormatAndScaleFontData(SingleStrokeFont, FontSize, &Letters);
-    //OPEN Test.TXT
-    FILE *WordFile = fopen("Test.txt", "r");
-    //CHECK HAS OPENED
-    if (!WordFile) {
+    FormatAndScaleFontData(SingleStrokeFont, FontSize, &Letters); // formats and scales all the font data to be stored locally
+    
+    FILE *WordFile = fopen("Test.txt", "r"); //OPEN Test.TXT
+    if (!WordFile) { //CHECK HAS OPENED
         printf("Failed to open Test.txt");
         return 1;
     }
 
-    //CALL SEPERATE WORDS FUNCTION
+    //sets up variables for word formatting and drawing
     int character;
     int numwords = 0;
-    char WordContents[15]; //array to hold words
-    int startposition = 0;
+    char WordContents[25]; //array to hold words, maximum word length of 25 characters (anything longer and will be longer than 100mm on minimum font size)
+    int startposition = 0; // sets start position to 0 to read the first word
 
     //find number of words 
-    while ((character = fgetc(WordFile)) != EOF) {
-        if (character == ' ' || character == '\n') {
-            numwords++;
+    while ((character = fgetc(WordFile)) != EOF) { //whilst there are characters in the file
+        if (character == ' ' || character == '\n') { // if the character is a space or new line
+            numwords++; //add to word count
         }
     }
     
-    //FOR AMOUNT OF WORDS
+    //Seperate and Print Words
     char CurrentChar;
     float Spacing[2]; //array to hold spacing values in x and y direction
     Spacing[X] = Letters[13].gcode[0][X]; //initial x position
     Spacing[Y] = Letters[13].gcode[0][Y]; //initial y position
-    for (int i = 0; i < numwords; i++) {
-        SeperateWords(WordFile, &WordContents, &startposition); //FORMAT WORD FUNCTION
-        FindWordSpacing(&Letters, WordContents, &Spacing, FontSize); //WORD SPACING FUNCTION
-        //FOR AMOUNT OF CHARACTERS IN WORD
+    Spacing[Y] = Spacing[Y] - 12.0f; //add 12mm margin at top of page
+    for (int i = 0; i < numwords; i++) { //for the number of words in the file
+        SeperateWords(WordFile, &WordContents, &startposition); //Find the characters in the current word
+        FindWordSpacing(&Letters, WordContents, &Spacing, FontSize); //Find the spacing for the start of the current word
         for (int j = 0; WordContents[j] != '\0'; j++) { //for the number of characters in the word
             char currentChar = WordContents[j]; //GET CURRENT CHARACTER
             int asciiValue = (int)currentChar; //GET ASCII VALUE OF CHARACTER    
-            GCodeToRobot(&Letters, asciiValue, Spacing, buffer); //GCODETOROBOT FUNCTION
+            GCodeToRobot(&Letters, asciiValue, Spacing, buffer); //Print the GCode for the current character
             Spacing[X] = Spacing[X] + 18*(FontSize/18.0f); //update spacing x position for next letter
         }
-        for (int k = 0; k < 15; k++) {   //resets wordcontents for next word
+        for (int k = 0; k < 25; k++) {   //resets wordcontents for next word
             WordContents[k] = 0; 
         }
     }
@@ -128,33 +124,12 @@ int main()
 
 
     //Set final conditions for robot
-    
-
-
-
-
-
-    // These are sample commands to draw out some information - these are the ones you will be generating.
-    /*
-    sprintf (buffer, "G0 X-13.41849 Y0.000\n");
+    sprintf (buffer, "G1 X0 Y0 F1000\n");
     SendCommands(buffer);
-    sprintf (buffer, "S1000\n");
-    SendCommands(buffer);
-    sprintf (buffer, "G1 X-13.41849 Y-4.28041\n");
-    SendCommands(buffer);
-    sprintf (buffer, "G1 X-13.41849 Y0.0000\n");
-    SendCommands(buffer);
-    sprintf (buffer, "G1 X-13.41089 Y4.28041\n");
+    sprintf (buffer, "M3\n");
     SendCommands(buffer);
     sprintf (buffer, "S0\n");
     SendCommands(buffer);
-    sprintf (buffer, "G0 X-7.17524 Y0\n");
-    SendCommands(buffer);
-    sprintf (buffer, "S1000\n");
-    SendCommands(buffer);
-    sprintf (buffer, "G0 X0 Y0\n");
-    SendCommands(buffer);
-    */
 
     // Before we exit the program we need to close the COM port
     CloseRS232Port();
