@@ -108,9 +108,9 @@ int main()
     float Spacing[2]; //array to hold spacing values in x and y direction
     Spacing[X] = Letters[13].gcode[0][X]; //initial x position
     Spacing[Y] = Letters[13].gcode[0][Y]; //initial y position
-    Spacing[Y] = Spacing[Y] - 12.0f; //add 12mm margin at top of page
+    Spacing[Y] = Spacing[Y] - (16.0f *FontSize/18.0f); //add margin at top of page
     for (int i = 0; i < numwords; i++) { //for the number of words in the file
-        SeperateWords(WordFile, &WordContents, &startposition, &line); //Find the characters in the current word
+        ReadWord(WordFile, &WordContents, &startposition); //Find the characters in the current word
         FindWordSpacing(&Letters, WordContents, &Spacing, FontSize); //Find the spacing for the start of the current word
         for (int j = 0; WordContents[j] != '\0'; j++) { //for the number of characters in the word
             char currentChar = WordContents[j]; //GET CURRENT CHARACTER
