@@ -10,16 +10,15 @@
 #define MAXCN 50
 
 int FindWordSpacing(CharacterFontData (*Letters)[], char WordContents[], float (*Spacing)[2], int FontSize) {
-    float SpaceBetweenWords = 20.0f * (FontSize) / 18.0f; //calculate space between words based on font size CHECK SPACING IS 20
+    float SpaceBetweenWords = 12.0f * (FontSize) / 18.0f; //calculate space between words based on font size CHECK SPACING IS 20
     int WordLength = sizeof(WordContents) / sizeof(WordContents[0]); //has / character 1 as size of calculates the bytes, not number of rows
-    if ((*Spacing)[X] + SpaceBetweenWords + (WordLength * 16.0f * ((FontSize)/18.0f)) > 100.0f) { //check if word length is 16 
-        if ((WordLength * 16.0f * (FontSize)/18) > 100.0f) { //if word itself is too long
-            printf("Word too long to fit on page.\n");
-            return -1; 
+    if ((*Spacing)[X] + SpaceBetweenWords + (WordLength * 16.0f * ((FontSize)/18.0f)) > 100.0f) { //check if word length plus current x pos plus space between words is greater than 100mm
+        if ((WordLength * 16.0f * (FontSize)/18) > 100.0f) { //if word itself is too long by itself
+            printf("Word too long to fit on page.\n"); // print error message
+            return 1; 
         }  
         else { //else move to next line
-        //(*Spacing)[Y] = (*Spacing)[Y] + Letters[10].gcode[0][Y]; //move down a line
-        (*Spacing)[Y] = (*Spacing)[Y] -5.0f + (*Letters)[10].gcode[0][Y]; //move down a line with 5mm gap CHECK WHICH ONE RIGHT
+        (*Spacing)[Y] = (*Spacing)[Y] + (*Letters)[10].gcode[0][Y]; //move down a line with 5mm gap CHECK WHICH ONE RIGHT
         (*Spacing)[X] = (*Letters)[13].gcode[0][X]; //reset x position
         }
     }
@@ -29,7 +28,7 @@ int FindWordSpacing(CharacterFontData (*Letters)[], char WordContents[], float (
             (*Spacing)[X] = (*Letters)[13].gcode[0][X]; //set to initial x position
         }
         else {
-        (*Spacing)[X] = (*Spacing)[X] + SpaceBetweenWords; //set spacing x value
+        (*Spacing)[X] = (*Spacing)[X] + SpaceBetweenWords; //set spacing x value from end of last word plus space between words
         }
     }
     return 0; 
@@ -64,6 +63,9 @@ for (int i=0; i < (*Letters)[asciiValue].location; i++) { //for each line of gco
     }
     }
 }
+sprintf(buffer, "S0\n"); //format pen command
+SendCommands(buffer);
+return 0;
 }
 
     // These are sample commands to draw out some information - these are the ones you will be generating.

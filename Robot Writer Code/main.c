@@ -90,6 +90,7 @@ int main()
 
     //sets up variables for word formatting and drawing
     int character;
+    int line = 1;
     int numwords = 0;
     char WordContents[25]; //array to hold words, maximum word length of 25 characters (anything longer and will be longer than 100mm on minimum font size)
     int startposition = 0; // sets start position to 0 to read the first word
@@ -100,6 +101,7 @@ int main()
             numwords++; //add to word count
         }
     }
+    numwords++; //add one to account for last word (not followed by space)
     
     //Seperate and Print Words
     char CurrentChar;
@@ -108,7 +110,7 @@ int main()
     Spacing[Y] = Letters[13].gcode[0][Y]; //initial y position
     Spacing[Y] = Spacing[Y] - 12.0f; //add 12mm margin at top of page
     for (int i = 0; i < numwords; i++) { //for the number of words in the file
-        SeperateWords(WordFile, &WordContents, &startposition); //Find the characters in the current word
+        SeperateWords(WordFile, &WordContents, &startposition, &line); //Find the characters in the current word
         FindWordSpacing(&Letters, WordContents, &Spacing, FontSize); //Find the spacing for the start of the current word
         for (int j = 0; WordContents[j] != '\0'; j++) { //for the number of characters in the word
             char currentChar = WordContents[j]; //GET CURRENT CHARACTER

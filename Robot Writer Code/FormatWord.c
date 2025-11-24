@@ -2,7 +2,26 @@
 #include <stdlib.h>
 #define MAXCN 20
 
-/*This function Seperates the words from the text file and saves them into an array of strings*/
+//This function Seperates the words from the text file and saves them into an array of strings
+int SeperateWords( FILE *WordFile, char (*WordContents)[], int *startposition, int *line)
+{
+    char currChar;
+	fseek(WordFile, *startposition, SEEK_SET); //sets file position to startposition
+        int j = *startposition;
+        int i=0;
+        while (j + 1 < MAXCN && ((currChar = fgetc(WordFile)) != ' ' && currChar != '\n') && currChar!=EOF){  //Reads untill the next space
+            (*WordContents)[i++] = (char)currChar; //saves letter to array
+            j++;
+            }   
+        while (currChar == '\n' || currChar == ' ') { //if the character is a new line
+            j++;                                //MUST MAKE IT COMPATIBLE WITH NEW LINES
+            currChar = fgetc(WordFile);
+        }
+        *startposition = j; //saves the start position of the next word next time the array is called
+    return 0;
+}
+
+/*
 int SeperateWords( FILE *WordFile, char (*WordContents)[], int *startposition)
 {
     char currChar;
@@ -17,5 +36,4 @@ int SeperateWords( FILE *WordFile, char (*WordContents)[], int *startposition)
 
     return 0;
 }
-
-
+*/
