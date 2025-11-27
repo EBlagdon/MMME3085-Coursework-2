@@ -81,7 +81,8 @@ int main()
     CharacterFontData Letters[256] = {0}; //array to hold font data for 256 ASCII characters
  
     FormatAndScaleFontData(SingleStrokeFont, FontSize, &Letters); // formats and scales all the font data to be stored locally
-    
+    fclose(SingleStrokeFont); //close font file
+
     FILE *WordFile = fopen("Test.txt", "r"); //OPEN Test.TXT
     if (!WordFile) { //CHECK HAS OPENED
         printf("Failed to open Test.txt");
@@ -89,32 +90,30 @@ int main()
     }
 
     //sets up variables for word formatting and drawing
-    int character;
-    int line = 1;
+    int currChar;
     int numwords = 0;
     char WordContents[25]; //array to hold words, maximum word length of 25 characters (anything longer and will be longer than 100mm on minimum font size)
     int startposition = 0; // sets start position to 0 to read the first word
 
     //find number of words 
-    while ((character = fgetc(WordFile)) != EOF) { //whilst there are characters in the file
-        if (character == ' ' || character == '\n') { // if the character is a space or new line
+    while ((currChar = fgetc(WordFile)) != EOF) { //whilst there are characters in the file
+        if (currChar == ' ' || currChar == '\n') { // if the character is a space or new line
             numwords++; //add to word count
         }
     }
     numwords++; //add one to account for last word (not followed by space)
     
     //Seperate and Print Words
-    char CurrentChar;
     float Spacing[2]; //array to hold spacing values in x and y direction
     Spacing[X] = Letters[13].gcode[0][X]; //initial x position
     Spacing[Y] = Letters[13].gcode[0][Y]; //initial y position
-    Spacing[Y] = Spacing[Y] - (16.0f *FontSize/18.0f); //add margin at top of page
+    Spacing[Y] = Spacing[Y] - (20.0f *FontSize/18.0f); //add margin at top of page
     for (int i = 0; i < numwords; i++) { //for the number of words in the file
         ReadWord(WordFile, &WordContents, &startposition); //Find the characters in the current word
         FindWordSpacing(&Letters, WordContents, &Spacing, FontSize); //Find the spacing for the start of the current word
         for (int j = 0; WordContents[j] != '\0'; j++) { //for the number of characters in the word
-            char currentChar = WordContents[j]; //GET CURRENT CHARACTER
-            int asciiValue = (int)currentChar; //GET ASCII VALUE OF CHARACTER    
+            char currChar = WordContents[j]; //GET CURRENT CHARACTER
+            int asciiValue = (int)currChar; //GET ASCII VALUE OF CHARACTER    
             GCodeToRobot(&Letters, asciiValue, Spacing, buffer); //Print the GCode for the current character
             Spacing[X] = Spacing[X] + 18*(FontSize/18.0f); //update spacing x position for next letter
         }
@@ -122,8 +121,7 @@ int main()
             WordContents[k] = 0; 
         }
     }
-            
-
+    fclose(WordFile); //close text file
 
     //Set final conditions for robot
     sprintf (buffer, "G1 X0 Y0 F1000\n");
@@ -139,6 +137,7 @@ int main()
 
     return (0);
 }
+
 
 // Send the data to the robot - note in 'PC' mode you need to hit space twice
 // as the dummy 'WaitForReply' has a getch() within the function.

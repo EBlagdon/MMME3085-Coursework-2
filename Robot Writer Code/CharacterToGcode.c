@@ -12,7 +12,7 @@
 int FindWordSpacing(CharacterFontData (*Letters)[], char WordContents[], float (*Spacing)[2], int FontSize) {
     float SpaceBetweenWords = 12.0f * (FontSize) / 18.0f; //calculate space between words based on font size
     int WordLength = 0;
-    for (int i=0; i < sizeof(WordContents); i++) { //for each character in the word
+    for (int i=0; i < sizeof(WordContents); i++) { //for each point in the wordcontents array
         if (WordContents[i] != 0) { //if the space isnt blank 
             WordLength++; //add to word length
         }
@@ -55,7 +55,6 @@ for (int i=0; i < (*Letters)[asciiValue].location; i++) { //for each line of gco
     float y = (*Letters)[asciiValue].gcode[i][Y]+Spacing[Y]; //get y position
     int pen = (int)(*Letters)[asciiValue].gcode[i][P]; //get pen position
     pen = pen * 1000; //convert pen position to servo value
-    //SendtoRobot(x, y, pen);
     sprintf(buffer, "G1 X%.2f Y%.2f\n", x, y); //format gcode command
     SendCommands(buffer);
     if (i == 0) { // for first line
@@ -63,15 +62,13 @@ for (int i=0; i < (*Letters)[asciiValue].location; i++) { //for each line of gco
         SendCommands(buffer);
     }
     if (i >0) { // for all but first line
-        if (pen != (*Letters)[asciiValue].gcode[i-1][P]){ //only send pen command if pen position changes
+        if (pen/1000 != (*Letters)[asciiValue].gcode[i-1][P]){ //only send pen command if pen position changes
             sprintf(buffer, "S%d\n", pen); //format pen command
             SendCommands(buffer);
     }
     }
 }
-sprintf(buffer, "S0\n"); //format pen command
-SendCommands(buffer);
-return 0; //OPTIMISE TO REMOVE DUPLICATES
+return 0; 
 }
 
     // These are sample commands to draw out some information - these are the ones you will be generating.

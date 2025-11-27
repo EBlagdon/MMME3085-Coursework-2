@@ -3,7 +3,7 @@
 #define MAXCN 20
 
 //This function Seperates the words from the text file and saves them into an array of strings
-int ReadWord( FILE *WordFile, char (*WordContents)[], int *startposition, int *line)
+int ReadWord( FILE *WordFile, char (*WordContents)[], int *startposition)
 {
     char currChar;
 	fseek(WordFile, *startposition, SEEK_SET); //sets file position to startposition

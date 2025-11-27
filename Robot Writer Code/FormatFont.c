@@ -4,32 +4,32 @@
 
 typedef struct {
     float gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
-    int location;           // Position of the character in the GCode array
+    int location;           // Position of the GCode in the GCode array
 } CharacterFontData;
 
 int FormatAndScaleFontData(FILE *SingleStrokeFont, int FontSize, CharacterFontData (*Letters)[]) {
-    int CharID;
+    int asciiValue;
     int CharLinesofGCode;
     char line[128]; 
     while (fgets(line, sizeof(line), SingleStrokeFont)) {    //reads each line of the font file 
-        if (sscanf(line, "999 %d %d", &CharID, &CharLinesofGCode) == 2) { //checks if the line is 999 which means new character
-            (*Letters)[CharID].location = 0;
+        if (sscanf(line, "999 %d %d", &asciiValue, &CharLinesofGCode) == 2) { //checks if the line is 999 which means new character
+            (*Letters)[asciiValue].location = 0;
             for (int j = 0; j < CharLinesofGCode; j++) { //loops for amount of gcode lines for that character
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
                     float x, y;
                     int pen;
                     if (sscanf(line, "%f %f %d", &x, &y, &pen) == 3) {
-                        (*Letters)[CharID].gcode[j][0] = x * FontSize / 18.0f; // Scale X
-                        (*Letters)[CharID].gcode[j][1] = y * FontSize / 18.0f; // Scale Y
-                        (*Letters)[CharID].gcode[j][2] = (float)pen;          // Pen position
-                        (*Letters)[CharID].location++; // Increment location count
+                        (*Letters)[asciiValue].gcode[j][0] = x * FontSize / 18.0f; // Scale X
+                        (*Letters)[asciiValue].gcode[j][1] = y * FontSize / 18.0f; // Scale Y
+                        (*Letters)[asciiValue].gcode[j][2] = (float)pen;          // Pen position
+                        (*Letters)[asciiValue].location++; // Increment location count
                     }
                     else {
                         printf("Could not read GCode on line %d\n", j);
                     }
                 }
                 else{
-                    printf("end of file while reading character %d\n", CharID);
+                    printf("end of file while reading character %d\n", asciiValue);
                 }
             }
         }
