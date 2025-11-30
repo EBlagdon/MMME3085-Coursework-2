@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAXCN 50  //max lines of gcode per character CHANGE IF NEEDED
+#define MAXCN 30  //max lines of gcode per character CHANGE IF NEEDED
 
 typedef struct {
-    float gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
+    int gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
     int location;           // Position of the GCode in the GCode array
 } CharacterFontData;
 
@@ -21,7 +21,7 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[
                     if (sscanf(line, "%d %d %d", &x, &y, &pen) == 3) {
                         (*Letters)[asciiValue].gcode[j][0] = x; // Scale X
                         (*Letters)[asciiValue].gcode[j][1] = y; // Scale Y
-                        (*Letters)[asciiValue].gcode[j][2] = (float)pen;          // Pen position
+                        (*Letters)[asciiValue].gcode[j][2] = pen;          // Pen position
                         (*Letters)[asciiValue].location++; // Increment location count
                     }
                     else {
