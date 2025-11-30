@@ -1,8 +1,0 @@
-# Ignore EVERYTHING
-*
-
-# Except this folder:
-!Robot Writer Code/
-
-# Except files inside it:
-!Robot Writer Code/**
