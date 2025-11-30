@@ -7,7 +7,7 @@ typedef struct {
     int location;           // Position of the GCode in the GCode array
 } CharacterFontData;
 
-int FormatAndScaleFontData(FILE *SingleStrokeFont, int FontSize, CharacterFontData (*Letters)[]) {
+int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[]) {
     int asciiValue;
     int CharLinesofGCode;
     char line[128]; 
@@ -16,11 +16,11 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, int FontSize, CharacterFontDa
             (*Letters)[asciiValue].location = 0;
             for (int j = 0; j < CharLinesofGCode; j++) { //loops for amount of gcode lines for that character
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
-                    float x, y;
+                    int x, y;
                     int pen;
-                    if (sscanf(line, "%f %f %d", &x, &y, &pen) == 3) {
-                        (*Letters)[asciiValue].gcode[j][0] = x * FontSize / 18.0f; // Scale X
-                        (*Letters)[asciiValue].gcode[j][1] = y * FontSize / 18.0f; // Scale Y
+                    if (sscanf(line, "%d %d %d", &x, &y, &pen) == 3) {
+                        (*Letters)[asciiValue].gcode[j][0] = x; // Scale X
+                        (*Letters)[asciiValue].gcode[j][1] = y; // Scale Y
                         (*Letters)[asciiValue].gcode[j][2] = (float)pen;          // Pen position
                         (*Letters)[asciiValue].location++; // Increment location count
                     }

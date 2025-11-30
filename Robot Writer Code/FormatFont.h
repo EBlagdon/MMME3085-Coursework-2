@@ -8,6 +8,6 @@ float gcode[MAXCN][3]; // X, Y, Pen for each GCode line
 int location; // Position of the character in the GCode array 
 } CharacterFontData;
 
-int FormatAndScaleFontData(FILE *SingleStrokeFont, int FontSize, CharacterFontData (*Letters)[]);
+int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[]);
 
 #endif // CHARACTER_FONT_DATA_H

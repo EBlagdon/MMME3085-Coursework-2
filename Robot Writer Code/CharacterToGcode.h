@@ -4,7 +4,7 @@
 #include "FormatFont.h" 
 #include "FormatWord.h"  
 
-int GCodeToRobot(CharacterFontData (*Letters)[], int asciiValue, float Spacing[], char buffer[]);
+int GCodeToRobot(CharacterFontData (*Letters)[], int asciiValue, float Spacing[], char buffer[], int FontSize);
 
 int FindWordSpacing(CharacterFontData (*Letters)[], char WordContents[], float (*Spacing)[], int FontSize);
 

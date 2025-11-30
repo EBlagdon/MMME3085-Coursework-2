@@ -80,7 +80,7 @@ int main()
     //CALL FORMAT AND SCALE FONT DATA FUNCTION
     CharacterFontData Letters[256] = {0}; //array to hold font data for 256 ASCII characters
  
-    FormatAndScaleFontData(SingleStrokeFont, FontSize, &Letters); // formats and scales all the font data to be stored locally
+    FormatAndScaleFontData(SingleStrokeFont, &Letters); // formats and scales all the font data to be stored locally
     fclose(SingleStrokeFont); //close font file
 
     FILE *WordFile = fopen("Test.txt", "r"); //OPEN Test.TXT
@@ -105,8 +105,8 @@ int main()
     
     //Seperate and Print Words
     float Spacing[2]; //array to hold spacing values in x and y direction
-    Spacing[X] = Letters[13].gcode[0][X]; //initial x position
-    Spacing[Y] = Letters[13].gcode[0][Y]; //initial y position
+    Spacing[X] = Letters[13].gcode[0][X] * FontSize / 18.0f; //initial x position
+    Spacing[Y] = Letters[13].gcode[0][Y] * FontSize / 18.0f; //initial y position
     Spacing[Y] = Spacing[Y] - (20.0f *FontSize/18.0f); //add margin at top of page
     for (int i = 0; i < numwords; i++) { //for the number of words in the file
         ReadWord(WordFile, &WordContents, &startposition); //Find the characters in the current word
@@ -114,7 +114,7 @@ int main()
         for (int j = 0; WordContents[j] != '\0'; j++) { //for the number of characters in the word
             char currChar = WordContents[j]; //GET CURRENT CHARACTER
             int asciiValue = (int)currChar; //GET ASCII VALUE OF CHARACTER    
-            GCodeToRobot(&Letters, asciiValue, Spacing, buffer); //Print the GCode for the current character
+            GCodeToRobot(&Letters, asciiValue, Spacing, buffer, FontSize); //Print the GCode for the current character
             Spacing[X] = Spacing[X] + 18*(FontSize/18.0f); //update spacing x position for next letter
         }
         for (int k = 0; k < 25; k++) {   //resets wordcontents for next word
