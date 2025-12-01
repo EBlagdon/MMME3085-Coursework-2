@@ -10,17 +10,17 @@ typedef struct {
 int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[]) {
     int asciiValue;
     int CharLinesofGCode;
-    char line[128]; 
+    char line[15]; //sets max line length for reading font file (uses 14 in font file but using 14 makes it blow up)
     while (fgets(line, sizeof(line), SingleStrokeFont)) {    //reads each line of the font file 
-        if (sscanf(line, "999 %d %d", &asciiValue, &CharLinesofGCode) == 2) { //checks if the line is 999 which means new character
+        if (sscanf(line, "999 %d %d", &asciiValue, &CharLinesofGCode) == 2) { //checks if the line is 999 which means new character ==2 means 2 valid variables extracted and 999 at start 
             (*Letters)[asciiValue].location = 0;
             for (int j = 0; j < CharLinesofGCode; j++) { //loops for amount of gcode lines for that character
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
                     int x, y;
                     int pen;
-                    if (sscanf(line, "%f %f %d", &x, &y, &pen) == 3) {
-                        (*Letters)[asciiValue].gcode[j][0] = x; // Scale X
-                        (*Letters)[asciiValue].gcode[j][1] = y; // Scale Y
+                    if (sscanf(line, "%f %f %d", &x, &y, &pen) == 3) { //if i change it to a decimal it dies. ==3 means 3 valid variables extracted
+                        (*Letters)[asciiValue].gcode[j][0] = x; // Store X
+                        (*Letters)[asciiValue].gcode[j][1] = y; // Store Y
                         (*Letters)[asciiValue].gcode[j][2] = pen;          // Pen position
                         (*Letters)[asciiValue].location++; // Increment location count
                     }
