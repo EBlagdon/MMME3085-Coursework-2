@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAXCN 30  //max lines of gcode per character CHANGE IF NEEDED
+#define MAXCN 50  //max lines of gcode per character CHANGE IF NEEDED
 
 typedef struct {
     int gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
@@ -18,7 +18,7 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
                     int x, y;
                     int pen;
-                    if (sscanf(line, "%d %d %d", &x, &y, &pen) == 3) {
+                    if (sscanf(line, "%f %f %d", &x, &y, &pen) == 3) {
                         (*Letters)[asciiValue].gcode[j][0] = x; // Scale X
                         (*Letters)[asciiValue].gcode[j][1] = y; // Scale Y
                         (*Letters)[asciiValue].gcode[j][2] = pen;          // Pen position
@@ -54,8 +54,8 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[
 
 
 
-/*This function Formats the font data and gets the positions of each character in the GCode array. 
-MAY WANT TO SET EACH CHAR IN OWN STRUCT BY CHANGING LINE 24*/
+/*This function Formats the font data and ge
+
 
 //May want to scale the data in the send function? to allow for arrays being ints instead of floats 
 /*

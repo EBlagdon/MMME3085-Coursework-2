@@ -2,10 +2,10 @@
 #include <stdlib.h>
 
 #include "serial.h"
-//#include "rs232.h"
+//#include "rs232.h" //UNCOMMENT THIS FOR ARDUINO SERIAL COMMUNICATION
 
 
-//#define Serial_Mode
+//#define Serial_Mode //UNCOMMENT THIS FOR ARDUINO SERIAL COMMUNICATION
 
 #ifdef Serial_Mode
 

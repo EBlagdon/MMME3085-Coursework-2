@@ -105,8 +105,8 @@ int main()
     
     //Seperate and Print Words
     float Spacing[2]; //array to hold spacing values in x and y direction
-    Spacing[X] = Letters[13].gcode[0][X] * FontSize / 18.0f; //initial x position
-    Spacing[Y] = Letters[13].gcode[0][Y] * FontSize / 18.0f; //initial y position
+    Spacing[X] = Letters[13].gcode[0][X]* ((float)(FontSize)/18.0f); //initial x position
+    Spacing[Y] = Letters[13].gcode[0][Y]* ((float)(FontSize)/18.0f); //initial y position
     Spacing[Y] = Spacing[Y] - (20.0f *FontSize/18.0f); //add margin at top of page
     for (int i = 0; i < numwords; i++) { //for the number of words in the file
         ReadWord(WordFile, &WordContents, &startposition); //Find the characters in the current word
