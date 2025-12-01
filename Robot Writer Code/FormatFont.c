@@ -20,7 +20,7 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, struct CharacterFontData (*Le
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
                     int x, y;
                     int pen;
-                    sscanf(line, "%f %f %d", &x, &y, &pen); //I am aware i should change it to %d %d but if i change it to a decimal for some reason everything breaks
+                    sscanf(line, "%f %f %f", &x, &y, &pen); //I am aware i should change it to %d %d %d but if i change it to a decimal for some reason everything breaks
                         (*Letters)[asciiValue].gcode[j][0] = x; // Store X    
                         (*Letters)[asciiValue].gcode[j][1] = y; // Store Y
                         (*Letters)[asciiValue].gcode[j][2] = pen;          // Pen position
