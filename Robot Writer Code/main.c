@@ -78,7 +78,7 @@ int main()
     }
    
     //CALL FORMAT AND SCALE FONT DATA FUNCTION
-    CharacterFontData Letters[256] = {0}; //array to hold font data for 256 ASCII characters
+    struct CharacterFontData Letters[128] = {0}; //array to hold font data for 128 ASCII characters (can be expanded as needed)
  
     FormatAndScaleFontData(SingleStrokeFont, &Letters); // formats and scales all the font data to be stored locally
     fclose(SingleStrokeFont); //close font file

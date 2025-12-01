@@ -2,31 +2,29 @@
 #include <stdlib.h>
 #define MAXCN 50  //max lines of gcode per character CHANGE IF NEEDED
 
-typedef struct {
+struct CharacterFontData{
     int gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
-    int location;           // Position of the GCode in the GCode array
-} CharacterFontData;
+    int location;
+} 
+CharacterFontData;
 
-int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[]) {
+
+int FormatAndScaleFontData(FILE *SingleStrokeFont, struct CharacterFontData (*Letters)[]) {
     int asciiValue;
     int CharLinesofGCode;
     char line[15]; //sets max line length for reading font file (uses 14 in font file but using 14 makes it blow up)
     while (fgets(line, sizeof(line), SingleStrokeFont)) {    //reads each line of the font file 
-        if (sscanf(line, "999 %d %d", &asciiValue, &CharLinesofGCode) == 2) { //checks if the line is 999 which means new character ==2 means 2 valid variables extracted and 999 at start 
+        if (sscanf(line, "999 %d %d", &asciiValue, &CharLinesofGCode)) { //checks if the line is 999 which means new character.
             (*Letters)[asciiValue].location = 0;
             for (int j = 0; j < CharLinesofGCode; j++) { //loops for amount of gcode lines for that character
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
                     int x, y;
                     int pen;
-                    if (sscanf(line, "%f %f %d", &x, &y, &pen) == 3) { //if i change it to a decimal it dies. ==3 means 3 valid variables extracted
-                        (*Letters)[asciiValue].gcode[j][0] = x; // Store X
+                    sscanf(line, "%f %f %d", &x, &y, &pen); //I am aware i should change it to %d %d but if i change it to a decimal for some reason everything breaks
+                        (*Letters)[asciiValue].gcode[j][0] = x; // Store X    
                         (*Letters)[asciiValue].gcode[j][1] = y; // Store Y
                         (*Letters)[asciiValue].gcode[j][2] = pen;          // Pen position
                         (*Letters)[asciiValue].location++; // Increment location count
-                    }
-                    else {
-                        printf("Could not read GCode on line %d\n", j);
-                    }
                 }
                 else{
                     printf("end of file while reading character %d\n", asciiValue);
@@ -58,7 +56,7 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[
 
 
 //May want to scale the data in the send function? to allow for arrays being ints instead of floats 
-/*
+
 int FormatAndScaleFontData( const int NumFont, FILE *SingleStrokeFont, int FontSize, int *CharGCode[], int *CharLocation) {
     int k=1;
     int i;

@@ -3,11 +3,11 @@
 #include <stdio.h>
 #define MAXCN 50
 
-typedef struct {
+struct CharacterFontData {
 float gcode[MAXCN][3]; // X, Y, Pen for each GCode line 
 int location; // Position of the character in the GCode array 
-} CharacterFontData;
+} ;
 
-int FormatAndScaleFontData(FILE *SingleStrokeFont, CharacterFontData (*Letters)[]);
+int FormatAndScaleFontData(FILE *SingleStrokeFont, struct CharacterFontData (*Letters)[]);
 
 #endif // CHARACTER_FONT_DATA_H

@@ -9,15 +9,15 @@
 #define P 2
 #define MAXCN 50
 
-int FindWordSpacing(CharacterFontData (*Letters)[], char WordContents[], float (*Spacing)[2], int FontSize) {
+int FindWordSpacing(struct CharacterFontData (*Letters)[], char WordContents[], float (*Spacing)[2], int FontSize) {
     float SpaceBetweenWords = 12.0f * (FontSize) / 18.0f; //calculate space between words based on font size
     int WordLength = 0;
-    for (int i=0; i < sizeof(WordContents); i++) { //for each point in the wordcontents array
+    for (int i=0; i < 25; i++) { //for each point in the word contents array
         if (WordContents[i] != 0) { //if the space isnt blank 
             WordLength++; //add to word length
         }
     }
-    //int WordLength = sizeof(WordContents) / sizeof(WordContents[0]); //has / character 1 as size of calculates the bytes, not number of rows
+    
     if ((*Spacing)[X] + SpaceBetweenWords + (WordLength * 16.0f * ((FontSize)/18.0f)) > 100.0f) { //check if word length plus current x pos plus space between words is greater than 100mm
         if ((WordLength * 16.0f * (FontSize)/18) > 100.0f) { //if word itself is too long by itself
             printf("Word too long to fit on page.\n"); // print error message
@@ -48,8 +48,7 @@ void SendCommands (char *buffer ){
     // getch(); // Omit this once basic testing with emulator has taken place
 }
 
-int GCodeToRobot(CharacterFontData (*Letters)[], int asciiValue, float Spacing[], char buffer[], int FontSize) {
-    CharacterFontData currentChar = (*Letters)[asciiValue]; //get character data from struct using ascii value
+int GCodeToRobot(struct CharacterFontData (*Letters)[], int asciiValue, float Spacing[], char buffer[], int FontSize) {
 for (int i=0; i < (*Letters)[asciiValue].location; i++) { //for each line of gcode
     float x = (*Letters)[asciiValue].gcode[i][X]* ((float)(FontSize)/18.0f)+Spacing[X]; //get x position
     float y = (*Letters)[asciiValue].gcode[i][Y]* ((float)(FontSize)/18.0f)+Spacing[Y]; //get y position
