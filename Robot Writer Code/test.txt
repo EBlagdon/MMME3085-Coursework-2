@@ -1,2 +1,1 @@
-The quick brown fox
-jumped over the lazy dog
+This text is too long to fit in a line
