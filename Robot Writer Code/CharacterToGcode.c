@@ -52,20 +52,21 @@ int GCodeToRobot(struct CharacterFontData (*Letters)[], int asciiValue, float Sp
 for (int i=0; i < (*Letters)[asciiValue].location; i++) { //for each line of gcode
     float x = (*Letters)[asciiValue].gcode[i][X]* ((float)(FontSize)/18.0f)+Spacing[X]; //get x position
     float y = (*Letters)[asciiValue].gcode[i][Y]* ((float)(FontSize)/18.0f)+Spacing[Y]; //get y position
-    int pen = (int)(*Letters)[asciiValue].gcode[i][P]; //get pen position
-    pen = pen * 1000; //convert pen position to servo value
-    sprintf(buffer, "G1 X%.2f Y%.2f\n", x, y); //format gcode command
-    SendCommands(buffer);
+    float pen = (*Letters)[asciiValue].gcode[i][P]; //get pen position
+    pen = pen *1000; //convert to int for gcode
+
     if (i == 0) { // for first line
-        sprintf(buffer, "S%d\n", pen); //format pen command
+        sprintf(buffer, "S%d\n", (int)pen); //format pen command CHANGE TO S FOR ROBOT
         SendCommands(buffer);
     }
     if (i >0) { // for all but first line
         if (pen/1000 != (*Letters)[asciiValue].gcode[i-1][P]){ //only send pen command if pen position changes
-            sprintf(buffer, "S%d\n", pen); //format pen command
+            sprintf(buffer, "S%d\n", (int)pen); //format pen command
             SendCommands(buffer);
     }
     }
+        sprintf(buffer, "G1 X%.2f Y%.2f\n", x, y); //format gcode command
+    SendCommands(buffer);
 }
 return 0; 
 }

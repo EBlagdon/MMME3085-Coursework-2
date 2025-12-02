@@ -3,7 +3,7 @@
 #define MAXCN 50  //max lines of gcode per character CHANGE IF NEEDED
 
 struct CharacterFontData{
-    int gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
+    float gcode[MAXCN][3];  // Array to hold GCode data for each character holding X, Y, and Pen positions
     int location;
 } 
 CharacterFontData;
@@ -18,9 +18,9 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, struct CharacterFontData (*Le
             (*Letters)[asciiValue].location = 0;
             for (int j = 0; j < CharLinesofGCode; j++) { //loops for amount of gcode lines for that character
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
-                    int x, y;
-                    int pen;
-                    sscanf(line, "%f %f %f", &x, &y, &pen); //I am aware i should change it to %d %d %d but if i change it to a decimal for some reason everything breaks
+                    float x, y;
+                    float pen;
+                    sscanf(line, "%f %f %f", &x, &y, &pen); //I am aware i should change it to integer but if i do so it breaks
                         (*Letters)[asciiValue].gcode[j][0] = x; // Store X    
                         (*Letters)[asciiValue].gcode[j][1] = y; // Store Y
                         (*Letters)[asciiValue].gcode[j][2] = pen;          // Pen position
