@@ -17,7 +17,6 @@ int FindWordSpacing(struct CharacterFontData (*Letters)[], char WordContents[], 
             WordLength++; //add to word length
         }
     }
-    
     if ((*Spacing)[X] + SpaceBetweenWords + (WordLength * 16.0f * ((FontSize)/18.0f)) > 100.0f) { //check if word length plus current x pos plus space between words is greater than 100mm
         if ((WordLength * 16.0f * (FontSize)/18) > 100.0f) { //if word itself is too long by itself
             printf("Word too long to fit on page.\n"); // print error message
@@ -56,7 +55,7 @@ for (int i=0; i < (*Letters)[asciiValue].location; i++) { //for each line of gco
     pen = pen *1000; //convert to int for gcode
 
     if (i == 0) { // for first line
-        sprintf(buffer, "S%d\n", (int)pen); //format pen command CHANGE TO S FOR ROBOT
+        sprintf(buffer, "S%d\n", (int)pen); //format pen command 
         SendCommands(buffer);
     }
     if (i >0) { // for all but first line

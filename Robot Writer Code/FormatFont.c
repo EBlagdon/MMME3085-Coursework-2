@@ -18,9 +18,9 @@ int FormatAndScaleFontData(FILE *SingleStrokeFont, struct CharacterFontData (*Le
             (*Letters)[asciiValue].location = 0;
             for (int j = 0; j < CharLinesofGCode; j++) { //loops for amount of gcode lines for that character
                 if (fgets(line, sizeof(line), SingleStrokeFont)) { //checks if there is a line there to read
-                    float x, y;
+                    float x, y; //have to store x y and pen as floats because integers do not save correctly. Why i may ask? who knows
                     float pen;
-                    sscanf(line, "%f %f %f", &x, &y, &pen); //I am aware i should change it to integer but if i do so it breaks
+                    sscanf(line, "%f %f %f", &x, &y, &pen); 
                         (*Letters)[asciiValue].gcode[j][0] = x; // Store X    
                         (*Letters)[asciiValue].gcode[j][1] = y; // Store Y
                         (*Letters)[asciiValue].gcode[j][2] = pen;          // Pen position

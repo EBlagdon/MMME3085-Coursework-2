@@ -57,7 +57,7 @@ int main()
 
     // OPEN SINGLE STROKE FONT .TXT
     FILE *SingleStrokeFont = fopen("SingleStrokeFont.txt", "r");
-    if (!SingleStrokeFont) { //CHECK HAS OPENED
+    if (SingleStrokeFont == NULL) { //CHECK HAS OPENED
         printf("Failed to open SingleStrokeFont.txt");
         return 1;
     }
@@ -84,7 +84,7 @@ int main()
     fclose(SingleStrokeFont); //close font file
 
     FILE *WordFile = fopen("Test.txt", "r"); //OPEN Test.TXT
-    if (!WordFile) { //CHECK HAS OPENED
+    if (WordFile == NULL) { //CHECK HAS OPENED
         printf("Failed to open Test.txt");
         return 1;
     }
